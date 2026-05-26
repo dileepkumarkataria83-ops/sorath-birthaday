@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Sorath!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* Using your image as a full cover background with a fallback gradient */
+            background: linear-gradient(rgba(13, 12, 29, 0.65), rgba(13, 12, 29, 0.85)), 
+                        url('IMG_20260301_152012.jpg') no-repeat center center fixed;
+            background-size: cover;
+            font-family: 'Outfit', sans-serif;
+            text-align: center;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        .main-container {
+            position: relative;
+            z-index: 10;
+            max-width: 90%;
+            width: 420px;
+            background: rgba(13, 12, 29, 0.55);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            padding: 3rem 2rem;
+            border-radius: 30px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+        }
+
+        /* Central profile preview cropped from your image */
+        .profile-frame {
+            width: 140px;
+            height: 140px;
+            margin: 0 auto 1.5rem auto;
+        }
+        .profile-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #ffd700;
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.4);
+        }
+
+        h1 {
+            font-family: 'Fredoka One', cursive;
+            font-size: 2.8rem;
+            margin: 0;
+            background: linear-gradient(45deg, #ff8c00, #e94560, #ffd700);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientShift 4s linear infinite;
+        }
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .celebrant-name {
+            font-family: 'Fredoka One', cursive;
+            font-size: 2.1rem;
+            color: #ffffff;
+            text-shadow: 0 0 15px rgba(255,255,255,0.6), 0 0 30px #e94560;
+            margin: 0.5rem 0 1.5rem 0;
+        }
+
+        .cake-box {
+            margin: 1.5rem 0;
+            cursor: pointer;
+            display: inline-block;
+        }
+        .cake-icon {
+            font-size: 3.5rem;
+            transition: transform 0.2s;
+            display: inline-block;
+        }
+        .cake-box:hover .cake-icon {
+            transform: scale(1.15) rotate(5deg);
+        }
+        .cake-instruction {
+            font-size: 0.85rem;
+            color: #ffd700;
+            opacity: 0.8;
+            margin-top: 0.2rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 1.5rem;
+        }
+        button {
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #e94560 0%, #ff8c00 100%);
+            color: white;
+            box-shadow: 0 8px 20px rgba(233, 69, 96, 0.3);
+        }
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        button:hover { transform: translateY(-3px); }
+        
+        @media (max-width: 480px) {
+            h1 { font-size: 2.2rem; }
+            .celebrant-name { font-size: 1.7rem; }
+            .main-container { padding: 2rem 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-container">
+        <div class="profile-frame">
+            <img src="IMG_20260301_152012.jpg" alt="Sorath" class="profile-img">
+        </div>
+
+        <h1>Happy Birthday</h1>
+        <div class="celebrant-name">Sorath Sindhi Kataria</div>
+        
+        <p style="color: #cbd5e1; font-size: 1.05rem; line-height: 1.6;">
+            Wishing you a day as beautiful, bright, and joyful as your smile! May this year bring endless happiness and blessings.
+        </p>
+
+        <div class="cake-box" onclick="blowCandles()">
+            <div class="cake-icon" id="cakeElement">🎂</div>
+            <div class="cake-instruction" id="cakeText">Click to blow candles</div>
+        </div>
+
+        <div class="btn-group">
+            <button class="btn-primary" onclick="sideBursts()">Surprise 🎉</button>
+            <button class="btn-secondary" onclick="toggleMusic()"><span id="musicIcon">🎵</span> Play Song</button>
+        </div>
+    </div>
+
+    <script>
+        let candlesBlown = false;
+        function blowCandles() {
+            if (!candlesBlown) {
+                document.getElementById('cakeElement').innerHTML = "🍰";
+                document.getElementById('cakeText').innerHTML = "Make a wish fulfilled! ✨";
+                candlesBlown = true;
+                confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 } });
+            } else {
+                document.getElementById('cakeElement').innerHTML = "🎂";
+                document.getElementById('cakeText').innerHTML = "Click to blow candles";
+                candlesBlown = false;
+            }
+        }
+
+        function sideBursts() {
+            confetti({ particleCount: 50, angle: 60, spread: 55, origin: { x: 0 } });
+            confetti({ particleCount: 50, angle: 120, spread: 55, origin: { x: 1 } });
+        }
+
+        let audioCtx = null;
+        let musicPlaying = false;
+        let notesTimeout = [];
+
+        function playTone(freq, duration, startTime) {
+            const osc = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(freq, startTime);
+            gainNode.gain.setValueAtTime(0.15, startTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.0001, startTime + duration);
+            osc.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            osc.start(startTime);
+            osc.stop(startTime + duration);
+        }
+
+        function toggleMusic() {
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if (musicPlaying) {
+                notesTimeout.forEach(clearTimeout);
+                notesTimeout = [];
+                document.getElementById('musicIcon').innerHTML = "🎵";
+                musicPlaying = false;
+                return;
+            }
+
+            document.getElementById('musicIcon').innerHTML = "⏸️";
+            musicPlaying = true;
+
+            const melody = [
+                261.63, 261.63, 293.66, 261.63, 349.23, 329.63,
+                261.63, 261.63, 293.66, 261.63, 392.00, 349.23,
+                261.63, 261.63, 523.25, 440.00, 349.23, 329.63, 293.66,
+                466.16, 466.16, 440.00, 349.23, 392.00, 349.23
+            ];
+            const durations = [
+                0.4, 0.4, 0.8, 0.8, 0.8, 1.6,
+                0.4, 0.4, 0.8, 0.8, 0.8, 1.6,
+                0.4, 0.4, 0.8, 0.8, 0.8, 0.8, 0.8,
+                0.4, 0.4, 0.8, 0.8, 0.8, 1.6
+            ];
+
+            let accumulatedDelay = 0;
+            melody.forEach((note, index) => {
+                const delay = accumulatedDelay * 1000;
+                const t = setTimeout(() => {
+                    if(musicPlaying) playTone(note, durations[index], audioCtx.currentTime);
+                }, delay);
+                notesTimeout.push(t);
+                accumulatedDelay += durations[index] * 0.75;
+            });
+
+            const endTimeout = setTimeout(() => {
+                document.getElementById('musicIcon').innerHTML = "🎵";
+                musicPlaying = false;
+            }, accumulatedDelay * 1000);
+            notesTimeout.push(endTimeout);
+        }
+
+        window.onload = function() {
+            setTimeout(() => {
+                confetti({ particleCount: 80, spread: 60, origin: { y: 0.6 } });
+            }, 600);
+        };
+    </script>
+</body>
+</html>
